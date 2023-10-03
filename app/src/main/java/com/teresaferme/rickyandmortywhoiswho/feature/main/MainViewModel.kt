@@ -1,32 +1,20 @@
-package com.teresaferme.rickyandmortywhoiswho.view
+package com.teresaferme.rickyandmortywhoiswho.feature.main
 
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.teresaferme.rickyandmortywhoiswho.model.RMCharacter
 import com.teresaferme.rickyandmortywhoiswho.model.RMGender
 import com.teresaferme.rickyandmortywhoiswho.model.RMSpecies
 
-@Composable
-fun CharacterList(
-    characterList: List<RMCharacter>?
-) {
-    LazyColumn(content = {
-        characterList?.forEach { character ->
-            item {
-                CharacterListItem(
-                    character
-                )
-            }
-        }
-    })
-}
+class MainViewModel: ViewModel() {
+    var characterList: MutableLiveData<List<RMCharacter>?> = MutableLiveData()
 
-@Preview
-@Composable
-fun CharacterListPreview() {
-    CharacterList(
-        listOf(
+    init {
+        this.getCharacterList()
+    }
+
+    private fun getCharacterList() {
+        this.characterList.value = listOf(
             RMCharacter(
                 name = "Name example",
                 RMGender.FEMALE,
@@ -43,5 +31,6 @@ fun CharacterListPreview() {
                 RMSpecies.HUMAN
             )
         )
-    )
+    }
+
 }
