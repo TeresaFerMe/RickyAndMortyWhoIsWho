@@ -21,27 +21,3 @@ fun CharacterList(
         }
     })
 }
-
-@Preview
-@Composable
-fun CharacterListPreview() {
-    CharacterList(
-        listOf(
-            RMCharacter(
-                name = "Name example",
-                RMGender.FEMALE,
-                RMSpecies.HUMAN
-            ),
-            RMCharacter(
-                name = "Name example",
-                RMGender.FEMALE,
-                RMSpecies.HUMAN
-            ),
-            RMCharacter(
-                name = "Name example",
-                RMGender.FEMALE,
-                RMSpecies.HUMAN
-            )
-        )
-    )
-}

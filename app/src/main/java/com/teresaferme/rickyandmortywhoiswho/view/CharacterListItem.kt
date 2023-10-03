@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.gson.annotations.SerializedName
 import com.teresaferme.rickyandmortywhoiswho.R
 import com.teresaferme.rickyandmortywhoiswho.model.RMCharacter
 import com.teresaferme.rickyandmortywhoiswho.model.RMGender
@@ -55,9 +56,18 @@ fun CharacterListItem(
 fun CharacterListItemsPreview() {
     CharacterListItem(
         RMCharacter(
-            name = "Name example",
-            RMGender.FEMALE,
-            RMSpecies.HUMAN
+            id = "name",
+            name = "status",
+            status = "species",
+            species = "type",
+            type = "gender",
+            gender = "origin",
+            origin = "location",
+            location = "image",
+            image = "episode",
+            episode = "url",
+            url = "created",
+            created = "url"
         )
     )
 }
