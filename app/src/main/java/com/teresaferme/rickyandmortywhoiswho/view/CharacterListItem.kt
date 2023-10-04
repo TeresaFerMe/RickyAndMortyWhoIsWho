@@ -3,6 +3,7 @@ package com.teresaferme.rickyandmortywhoiswho.view
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -33,8 +34,7 @@ import com.teresaferme.rickyandmortywhoiswho.model.RMStatus
 
 @Composable
 fun CharacterListItem(
-    episodeCount: Int?,
-    model: RMCharacter
+    episodeCount: Int?, model: RMCharacter
 ) {
     Card(
         Modifier
@@ -44,13 +44,14 @@ fun CharacterListItem(
     ) {
         Row {
             Box(
-                modifier = Modifier
-                    .wrapContentSize()
+                modifier = Modifier.wrapContentSize()
             ) {
                 AsyncImage(
-                    modifier = Modifier.clip(RoundedCornerShape(topStart = 12.dp, bottomStart = 12.dp)),
-                    model = model.image,
-                    contentDescription = model.image
+                    modifier = Modifier.clip(
+                        RoundedCornerShape(
+                            topStart = 12.dp, bottomStart = 12.dp
+                        )
+                    ), model = model.image, contentDescription = model.image
                 )
                 Icon(
                     modifier = Modifier
@@ -63,26 +64,38 @@ fun CharacterListItem(
                 )
             }
 
-            Column(
+            Box(
                 Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
                     .padding(20.dp)
             ) {
-                Text(fontWeight = FontWeight.Bold, fontSize = 20.sp, text = model.name)
-                Text(text = model.getSpecies().value)
-                episodeCount?.let {
-                    Button(onClick = { /**/ }, enabled = false) {
-                        Text(text = RMCharacterType.getCharacterType(model.episode.size.div(episodeCount.toDouble())).description)
+                Column {
+                    Text(fontWeight = FontWeight.Bold, fontSize = 20.sp, text = model.name)
+                    Text(text = model.getSpecies().value)
+                    episodeCount?.let {
+                        Button(
+                            contentPadding = PaddingValues(horizontal = 6.dp, vertical = 6.dp),
+                            onClick = { /**/ },
+                            enabled = false
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(0.dp),
+                                text = RMCharacterType.getCharacterType(
+                                    model.episode.size.div(
+                                        episodeCount.toDouble()
+                                    )
+                                ).description
+                            )
+                        }
                     }
                 }
-                //TODO TERESA implement protagonism level
                 if (model.getStatus() == RMStatus.DEAD) {
                     Image(
                         modifier = Modifier
                             .padding(12.dp)
                             .size(32.dp)
-                            .align(Alignment.CenterHorizontally),
+                            .align(Alignment.BottomEnd),
                         painter = painterResource(id = R.drawable.image_dead),
                         contentDescription = "Dead"
                     )
@@ -97,8 +110,7 @@ fun CharacterListItem(
 @Composable
 fun CharacterListItemsPreview() {
     CharacterListItem(
-        null,
-        RMCharacter(
+        null, RMCharacter(
             id = "name",
             name = "status",
             status = "Dead",
