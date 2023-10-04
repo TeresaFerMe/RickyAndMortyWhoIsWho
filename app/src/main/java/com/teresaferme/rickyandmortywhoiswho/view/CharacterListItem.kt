@@ -40,7 +40,7 @@ fun CharacterListItem(
         Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(horizontal = 24.dp, vertical = 12.dp)
+            .padding(horizontal = 20.dp, vertical = 12.dp)
     ) {
         Row {
             Box(
