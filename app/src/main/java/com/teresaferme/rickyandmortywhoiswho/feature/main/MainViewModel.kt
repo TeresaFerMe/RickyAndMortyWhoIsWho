@@ -3,9 +3,9 @@ package com.teresaferme.rickyandmortywhoiswho.feature.main
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.teresaferme.rickyandmortywhoiswho.RMGetCharactersResponseModel
-import com.teresaferme.rickyandmortywhoiswho.RMRetrofitClientInstance
-import com.teresaferme.rickyandmortywhoiswho.RMService
+import com.teresaferme.rickyandmortywhoiswho.network.RMGetCharactersResponseModel
+import com.teresaferme.rickyandmortywhoiswho.network.RMRetrofitClientInstance
+import com.teresaferme.rickyandmortywhoiswho.network.RMService
 import com.teresaferme.rickyandmortywhoiswho.model.RMCharacter
 import retrofit2.Call
 import retrofit2.Callback
