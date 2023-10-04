@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.teresaferme.rickyandmortywhoiswho.R
 import com.teresaferme.rickyandmortywhoiswho.model.RMCharacter
+import com.teresaferme.rickyandmortywhoiswho.model.RMCharacterType
 import com.teresaferme.rickyandmortywhoiswho.model.RMGetCharactersPlaceResponseModel
 import com.teresaferme.rickyandmortywhoiswho.model.RMStatus
 
@@ -70,7 +72,9 @@ fun CharacterListItem(
                 Text(fontWeight = FontWeight.Bold, fontSize = 20.sp, text = model.name)
                 Text(text = model.getSpecies().value)
                 episodeCount?.let {
-                    Text(text = "${model.episode.size}/$episodeCount")
+                    Button(onClick = { /**/ }, enabled = false) {
+                        Text(text = RMCharacterType.getCharacterType(model.episode.size.div(episodeCount.toDouble())).description)
+                    }
                 }
                 //TODO TERESA implement protagonism level
                 if (model.getStatus() == RMStatus.DEAD) {
