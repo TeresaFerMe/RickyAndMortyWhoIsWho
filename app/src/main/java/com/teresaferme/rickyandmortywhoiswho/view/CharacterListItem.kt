@@ -1,6 +1,7 @@
 package com.teresaferme.rickyandmortywhoiswho.view
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -34,13 +35,14 @@ import com.teresaferme.rickyandmortywhoiswho.model.RMStatus
 
 @Composable
 fun CharacterListItem(
-    episodeCount: Int?, model: RMCharacter
+    episodeCount: Int?, model: RMCharacter, onClick: (url: String) -> Unit
 ) {
     Card(
         Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(horizontal = 20.dp, vertical = 12.dp)
+            .clickable { onClick.invoke(model.url) }
     ) {
         Row {
             Box(
@@ -104,25 +106,4 @@ fun CharacterListItem(
         }
 
     }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-fun CharacterListItemsPreview() {
-    CharacterListItem(
-        null, RMCharacter(
-            id = "name",
-            name = "status",
-            status = "Dead",
-            species = "type",
-            type = "gender",
-            gender = "origin",
-            origin = RMGetCharactersPlaceResponseModel("location", "url"),
-            location = RMGetCharactersPlaceResponseModel("location", "url"),
-            image = "https://rickandmortyapi.com/api/character/avatar/165.jpeg",
-            episode = arrayOf("url"),
-            url = "created",
-            created = "url"
-        )
-    )
 }

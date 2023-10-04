@@ -13,12 +13,15 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 
 
 class MainViewModel: ViewModel() {
     var characterList: MutableLiveData<MutableList<RMCharacter>?> = MutableLiveData()
     var episodeNumber: MutableLiveData<Int?> = MutableLiveData()
-    private var nextPage: Int = 1
+    private var nextPage: String? = null
 
     init {
         viewModelScope.launch {
@@ -30,24 +33,28 @@ class MainViewModel: ViewModel() {
     }
 
     fun getMoreCharacters() {
-        nextPage++
-        RMRetrofitClientInstance().getRetrofitInstance()?.create(
-            RMService::class.java
-        )?.getMoreCharacters(nextPage)?.enqueue(object : Callback<RMGetCharactersResponseModel> {
-            override fun onResponse(
-                call: Call<RMGetCharactersResponseModel>,
-                response: Response<RMGetCharactersResponseModel>
-            ) {
-                val list = characterList.value?.toMutableList()
-                list?.addAll(response.body()?.results as Collection<RMCharacter>)
-                characterList.value = list
-            }
+        nextPage?.let {nextPageUrl ->
+            RMRetrofitClientInstance().getRetrofitInstance()?.create(
+                RMService::class.java
+            )?.getMoreCharacters(nextPageUrl)?.enqueue(object : Callback<RMGetCharactersResponseModel> {
+                override fun onResponse(
+                    call: Call<RMGetCharactersResponseModel>,
+                    response: Response<RMGetCharactersResponseModel>
+                ) {
+                    val list = characterList.value?.toMutableList()
+                    response.body()?.let { body ->
+                        list?.addAll(body.results as Collection<RMCharacter>)
+                        characterList.value = list
+                        nextPage = body.info.next
+                    }
+                }
 
-            override fun onFailure(call: Call<RMGetCharactersResponseModel>, t: Throwable) {
-                Log.e(this.javaClass.name, t.stackTraceToString())
-            }
+                override fun onFailure(call: Call<RMGetCharactersResponseModel>, t: Throwable) {
+                    Log.e(this.javaClass.name, t.stackTraceToString())
+                }
 
-        })
+            })
+        }
     }
 
     private fun getCharacterList() {
@@ -58,7 +65,10 @@ class MainViewModel: ViewModel() {
                 call: Call<RMGetCharactersResponseModel>,
                 response: Response<RMGetCharactersResponseModel>
             ) {
-                characterList.value = response.body()?.results as MutableList<RMCharacter>
+                response.body()?.let { body ->
+                    characterList.value = body.results as MutableList<RMCharacter>
+                    nextPage = body.info.next
+                }
             }
 
             override fun onFailure(call: Call<RMGetCharactersResponseModel>, t: Throwable) {
@@ -80,6 +90,24 @@ class MainViewModel: ViewModel() {
             }
 
             override fun onFailure(call: Call<RMGetEpisodesResponseModel>, t: Throwable) {
+                Log.e(this.javaClass.name, t.stackTraceToString())
+            }
+
+        })
+    }
+
+    fun retrieveCharacterInfo(url: String) {
+        RMRetrofitClientInstance().getRetrofitInstance()?.create(
+            RMService::class.java
+        )?.getCharacterDetail(url)?.enqueue(object : Callback<RMCharacter> {
+            override fun onResponse(
+                call: Call<RMCharacter>,
+                response: Response<RMCharacter>
+            ) {
+                //TODO TERESA
+            }
+
+            override fun onFailure(call: Call<RMCharacter>, t: Throwable) {
                 Log.e(this.javaClass.name, t.stackTraceToString())
             }
 
