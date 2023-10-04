@@ -1,9 +1,11 @@
 package com.teresaferme.rickyandmortywhoiswho.model
 
-enum class RMGender(val value: String) {
-    MALE("male"),
-    FEMALE("female"),
-    UNKNOWN("unknown");
+import com.teresaferme.rickyandmortywhoiswho.R
+
+enum class RMGender(val value: String, val resourceId: Int) {
+    MALE("Male", R.drawable.baseline_male_24),
+    FEMALE("Female", R.drawable.baseline_female_24),
+    UNKNOWN("Unknown", R.drawable.baseline_question_mark_24);
 
     companion object {
         fun getFrom(value: String): RMGender {
