@@ -1,7 +1,6 @@
 package com.teresaferme.rickyandmortywhoiswho.model
 
 import com.google.gson.annotations.SerializedName
-import com.teresaferme.rickyandmortywhoiswho.RMGetCharactersInfoResponseModel
 
 class RMCharacter(
     @SerializedName("id")
@@ -31,6 +30,8 @@ class RMCharacter(
 ) {
     fun getGender() = RMGender.getFrom(value = gender)
     fun getSpecies() = RMSpecies.getFrom(value = species)
+
+    fun getStatus() = RMStatus.getFrom(value = status)
 }
 
 class RMGetCharactersPlaceResponseModel(

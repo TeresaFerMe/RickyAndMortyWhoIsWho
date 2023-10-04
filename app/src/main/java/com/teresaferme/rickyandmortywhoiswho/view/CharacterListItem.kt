@@ -1,5 +1,6 @@
 package com.teresaferme.rickyandmortywhoiswho.view
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,8 +24,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.teresaferme.rickyandmortywhoiswho.R
 import com.teresaferme.rickyandmortywhoiswho.model.RMCharacter
 import com.teresaferme.rickyandmortywhoiswho.model.RMGetCharactersPlaceResponseModel
+import com.teresaferme.rickyandmortywhoiswho.model.RMStatus
 
 @Composable
 fun CharacterListItem(
@@ -62,10 +65,15 @@ fun CharacterListItem(
                     .wrapContentHeight()
                     .padding(vertical = 20.dp)
             ) {
+                if (model.getStatus() == RMStatus.DEAD) {
+                    Image(
+                        modifier = Modifier.padding(12.dp).size(32.dp).align(Alignment.CenterHorizontally),
+                        painter = painterResource(id = R.drawable.image_dead),
+                        contentDescription = "Dead"
+                    )
+                }
                 Text(fontWeight = FontWeight.Bold, fontSize = 20.sp, text = model.name)
-                Text(text = model.getGender().value)
                 Text(text = model.getSpecies().value)
-                Text(text = model.status)
             }
         }
 
@@ -79,13 +87,13 @@ fun CharacterListItemsPreview() {
         RMCharacter(
             id = "name",
             name = "status",
-            status = "species",
+            status = "Dead",
             species = "type",
             type = "gender",
             gender = "origin",
             origin = RMGetCharactersPlaceResponseModel("location", "url"),
             location = RMGetCharactersPlaceResponseModel("location", "url"),
-            image = "episode",
+            image = "https://rickandmortyapi.com/api/character/avatar/165.jpeg",
             episode = arrayOf("url"),
             url = "created",
             created = "url"

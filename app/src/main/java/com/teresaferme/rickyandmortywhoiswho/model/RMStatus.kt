@@ -1,12 +1,13 @@
 package com.teresaferme.rickyandmortywhoiswho.model
 
-enum class RMSpecies(val value: String) {
-    HUMAN("Human"),
+enum class RMStatus(val value: String) {
+    LIFE("Alive"),
+    DEAD("Dead"),
     UNKNOWN("Unknown");
 
     companion object {
-        fun getFrom(value: String): RMSpecies {
-            RMSpecies.values().forEach {
+        fun getFrom(value: String): RMStatus {
+            RMStatus.values().forEach {
                 if (it.value == value) return it
             }
             return UNKNOWN
