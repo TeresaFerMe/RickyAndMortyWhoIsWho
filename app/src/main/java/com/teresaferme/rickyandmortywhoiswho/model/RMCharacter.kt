@@ -1,6 +1,7 @@
 package com.teresaferme.rickyandmortywhoiswho.model
 
 import com.google.gson.annotations.SerializedName
+import com.teresaferme.rickyandmortywhoiswho.RMGetCharactersInfoResponseModel
 
 class RMCharacter(
     @SerializedName("id")
@@ -16,13 +17,13 @@ class RMCharacter(
     @SerializedName("gender")
     val gender: String,
     @SerializedName("origin")
-    val origin: String,
+    val origin: RMGetCharactersPlaceResponseModel,
     @SerializedName("location")
-    val location: String,
+    val location: RMGetCharactersPlaceResponseModel,
     @SerializedName("image")
     val image: String,
     @SerializedName("episode")
-    val episode: String,
+    val episode: Array<String>,
     @SerializedName("url")
     val url: String,
     @SerializedName("created")
@@ -31,3 +32,10 @@ class RMCharacter(
     fun getGender() = RMGender.getFrom(value = gender)
     fun getSpecies() = RMSpecies.getFrom(value = species)
 }
+
+class RMGetCharactersPlaceResponseModel(
+    @SerializedName("name")
+    val name: String,
+    @SerializedName("url")
+    val url: String
+)

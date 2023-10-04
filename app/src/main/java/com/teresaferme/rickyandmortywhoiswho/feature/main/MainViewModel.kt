@@ -1,13 +1,12 @@
 package com.teresaferme.rickyandmortywhoiswho.feature.main
 
-import android.widget.Toast
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.teresaferme.rickyandmortywhoiswho.RMGetCharactersResponseModel
 import com.teresaferme.rickyandmortywhoiswho.RMRetrofitClientInstance
 import com.teresaferme.rickyandmortywhoiswho.RMService
 import com.teresaferme.rickyandmortywhoiswho.model.RMCharacter
-import com.teresaferme.rickyandmortywhoiswho.model.RMGender
-import com.teresaferme.rickyandmortywhoiswho.model.RMSpecies
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,16 +22,16 @@ class MainViewModel: ViewModel() {
     private fun getCharacterList() {
         RMRetrofitClientInstance().getRetrofitInstance()?.create(
             RMService::class.java
-        )?.getCharacters()?.enqueue(object : Callback<List<RMCharacter>?> {
+        )?.getCharacters()?.enqueue(object : Callback<RMGetCharactersResponseModel> {
             override fun onResponse(
-                call: Call<List<RMCharacter>?>,
-                response: Response<List<RMCharacter>?>
+                call: Call<RMGetCharactersResponseModel>,
+                response: Response<RMGetCharactersResponseModel>
             ) {
-                characterList.value = response.body()
+                characterList.value = response.body()?.results
             }
 
-            override fun onFailure(call: Call<List<RMCharacter>?>, t: Throwable) {
-                TODO("Not yet implemented")
+            override fun onFailure(call: Call<RMGetCharactersResponseModel>, t: Throwable) {
+                Log.e(this.javaClass.name, t.stackTraceToString())
             }
 
         })

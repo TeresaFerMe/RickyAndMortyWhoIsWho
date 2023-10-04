@@ -19,6 +19,7 @@ import com.google.gson.annotations.SerializedName
 import com.teresaferme.rickyandmortywhoiswho.R
 import com.teresaferme.rickyandmortywhoiswho.model.RMCharacter
 import com.teresaferme.rickyandmortywhoiswho.model.RMGender
+import com.teresaferme.rickyandmortywhoiswho.model.RMGetCharactersPlaceResponseModel
 import com.teresaferme.rickyandmortywhoiswho.model.RMSpecies
 
 @Composable
@@ -62,10 +63,10 @@ fun CharacterListItemsPreview() {
             species = "type",
             type = "gender",
             gender = "origin",
-            origin = "location",
-            location = "image",
+            origin = RMGetCharactersPlaceResponseModel("location", "url"),
+            location = RMGetCharactersPlaceResponseModel("location", "url"),
             image = "episode",
-            episode = "url",
+            episode = arrayOf("url"),
             url = "created",
             created = "url"
         )
