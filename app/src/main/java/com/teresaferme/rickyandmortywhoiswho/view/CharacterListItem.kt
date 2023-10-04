@@ -1,6 +1,5 @@
 package com.teresaferme.rickyandmortywhoiswho.view
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,40 +11,41 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.gson.annotations.SerializedName
-import com.teresaferme.rickyandmortywhoiswho.R
+import coil.compose.AsyncImage
 import com.teresaferme.rickyandmortywhoiswho.model.RMCharacter
-import com.teresaferme.rickyandmortywhoiswho.model.RMGender
 import com.teresaferme.rickyandmortywhoiswho.model.RMGetCharactersPlaceResponseModel
-import com.teresaferme.rickyandmortywhoiswho.model.RMSpecies
 
 @Composable
 fun CharacterListItem(
     model: RMCharacter
 ) {
-    Card (
+    Card(
         Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(horizontal = 24.dp, vertical = 12.dp)) {
+            .padding(horizontal = 24.dp, vertical = 12.dp)
+    ) {
         Row {
-            Image(
-                modifier = Modifier.padding(20.dp).clip(RoundedCornerShape(12.dp)),
-                painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                contentDescription = ""
+            AsyncImage(
+                modifier = Modifier
+                    .padding(20.dp)
+                    .clip(RoundedCornerShape(12.dp)),
+                model = model.image,
+                contentDescription = model.image
             )
-            Column (
+
+            Column(
                 Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
-                    .padding(vertical = 20.dp)) {
+                    .padding(vertical = 20.dp)
+            ) {
                 Text(text = model.name)
-                Text(text = "Gender")
-                Text(text = "Human")
-                Text(text = "alive")
+                Text(text = model.getGender().value)
+                Text(text = model.getSpecies().value)
+                Text(text = model.status)
             }
         }
 
