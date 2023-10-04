@@ -43,10 +43,9 @@ fun CharacterListItem(
             Box(
                 modifier = Modifier
                     .wrapContentSize()
-                    .padding(20.dp)
             ) {
                 AsyncImage(
-                    modifier = Modifier.clip(RoundedCornerShape(12.dp)),
+                    modifier = Modifier.clip(RoundedCornerShape(topStart = 12.dp, bottomStart = 12.dp)),
                     model = model.image,
                     contentDescription = model.image
                 )
@@ -58,12 +57,11 @@ fun CharacterListItem(
                 )
             }
 
-
             Column(
                 Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
-                    .padding(vertical = 20.dp)
+                    .padding(20.dp)
             ) {
                 if (model.getStatus() == RMStatus.DEAD) {
                     Image(
