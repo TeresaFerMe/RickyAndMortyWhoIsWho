@@ -51,7 +51,10 @@ fun CharacterListItem(
                     contentDescription = model.image
                 )
                 Icon(
-                    modifier = Modifier.align(Alignment.TopEnd).padding(12.dp).size(32.dp),
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(12.dp)
+                        .size(32.dp),
                     painter = painterResource(id = model.getGender().resourceId),
                     contentDescription = "Gender",
                     tint = Color.White
@@ -66,14 +69,20 @@ fun CharacterListItem(
             ) {
                 Text(fontWeight = FontWeight.Bold, fontSize = 20.sp, text = model.name)
                 Text(text = model.getSpecies().value)
+                episodeCount?.let {
+                    Text(text = "${model.episode.size}/$episodeCount")
+                }
+                //TODO TERESA implement protagonism level
                 if (model.getStatus() == RMStatus.DEAD) {
                     Image(
-                        modifier = Modifier.padding(12.dp).size(32.dp).align(Alignment.CenterHorizontally),
+                        modifier = Modifier
+                            .padding(12.dp)
+                            .size(32.dp)
+                            .align(Alignment.CenterHorizontally),
                         painter = painterResource(id = R.drawable.image_dead),
                         contentDescription = "Dead"
                     )
                 }
-                //TODO TERESA implement protagonism level
             }
         }
 

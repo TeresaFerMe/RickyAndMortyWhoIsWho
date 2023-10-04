@@ -17,7 +17,7 @@ import retrofit2.Response
 
 class MainViewModel: ViewModel() {
     var characterList: MutableLiveData<List<RMCharacter>?> = MutableLiveData()
-    var episodeNumber: Int? = null
+    var episodeNumber: MutableLiveData<Int?> = MutableLiveData()
 
     init {
         viewModelScope.launch {
@@ -54,7 +54,7 @@ class MainViewModel: ViewModel() {
                 call: Call<RMGetEpisodesResponseModel>,
                 response: Response<RMGetEpisodesResponseModel>
             ) {
-                episodeNumber = response.body()?.info?.count
+                episodeNumber.value = response.body()?.info?.count
             }
 
             override fun onFailure(call: Call<RMGetEpisodesResponseModel>, t: Throwable) {

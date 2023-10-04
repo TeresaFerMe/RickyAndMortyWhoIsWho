@@ -26,6 +26,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class RMMainActivity : ComponentActivity() {
     private val mainViewModel: MainViewModel by viewModel()
     private val characterList: MutableState<List<RMCharacter>?> = mutableStateOf(null)
+    private val episodeCount: MutableState<Int?> = mutableStateOf(null)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setUpObservers()
@@ -44,6 +45,9 @@ class RMMainActivity : ComponentActivity() {
         mainViewModel.characterList.observe(this) {
             this.characterList.value = it
         }
+        mainViewModel.episodeNumber.observe(this) {
+            this.episodeCount.value = it
+        }
     }
 
     @Composable
@@ -58,7 +62,7 @@ class RMMainActivity : ComponentActivity() {
                 textAlign = TextAlign.Center
             )
             CharacterList(
-                episodeCount = mainViewModel.episodeNumber,
+                episodeCount = episodeCount.value,
                 characterList = characterList.value
             )
         }
