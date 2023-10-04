@@ -63,6 +63,8 @@ fun CharacterListItem(
                     .wrapContentHeight()
                     .padding(20.dp)
             ) {
+                Text(fontWeight = FontWeight.Bold, fontSize = 20.sp, text = model.name)
+                Text(text = model.getSpecies().value)
                 if (model.getStatus() == RMStatus.DEAD) {
                     Image(
                         modifier = Modifier.padding(12.dp).size(32.dp).align(Alignment.CenterHorizontally),
@@ -70,8 +72,6 @@ fun CharacterListItem(
                         contentDescription = "Dead"
                     )
                 }
-                Text(fontWeight = FontWeight.Bold, fontSize = 20.sp, text = model.name)
-                Text(text = model.getSpecies().value)
             }
         }
 
