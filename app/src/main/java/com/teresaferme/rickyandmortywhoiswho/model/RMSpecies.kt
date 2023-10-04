@@ -2,6 +2,9 @@ package com.teresaferme.rickyandmortywhoiswho.model
 
 enum class RMSpecies(val value: String) {
     HUMAN("Human"),
+    ALIEN("Alien"),
+    HUMANOID("Humanoid"),
+    ANIMAL("Animal"),
     UNKNOWN("Unknown");
 
     companion object {
