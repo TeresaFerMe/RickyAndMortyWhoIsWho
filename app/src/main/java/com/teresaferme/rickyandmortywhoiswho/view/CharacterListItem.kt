@@ -31,6 +31,7 @@ import com.teresaferme.rickyandmortywhoiswho.model.RMStatus
 
 @Composable
 fun CharacterListItem(
+    episodeCount: Int?,
     model: RMCharacter
 ) {
     Card(
@@ -72,6 +73,7 @@ fun CharacterListItem(
                         contentDescription = "Dead"
                     )
                 }
+                //TODO TERESA implement protagonism level
             }
         }
 
@@ -82,6 +84,7 @@ fun CharacterListItem(
 @Composable
 fun CharacterListItemsPreview() {
     CharacterListItem(
+        null,
         RMCharacter(
             id = "name",
             name = "status",

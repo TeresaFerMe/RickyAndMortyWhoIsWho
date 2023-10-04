@@ -2,7 +2,7 @@ package com.teresaferme.rickyandmortywhoiswho.network
 
 import com.google.gson.annotations.SerializedName
 
-class RMGetCharactersInfoResponseModel(
+class RMGetInfoResponseModel(
     @SerializedName("count")
     val count: Int,
     @SerializedName("pages")

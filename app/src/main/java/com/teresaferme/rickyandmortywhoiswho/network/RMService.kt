@@ -8,5 +8,8 @@ import retrofit2.http.GET
 interface RMService {
     @GET("character/")
     fun getCharacters(): Call<RMGetCharactersResponseModel>?
+
+    @GET("episode/")
+    fun getEpisodes(): Call<RMGetEpisodesResponseModel>?
 }
 

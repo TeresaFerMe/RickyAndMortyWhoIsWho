@@ -18,15 +18,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.Observer
 import com.teresaferme.rickyandmortywhoiswho.model.RMCharacter
-import com.teresaferme.rickyandmortywhoiswho.model.RMGender
-import com.teresaferme.rickyandmortywhoiswho.model.RMSpecies
 import com.teresaferme.rickyandmortywhoiswho.ui.theme.RickyAndMortyWhoIsWhoTheme
 import com.teresaferme.rickyandmortywhoiswho.view.CharacterList
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.context.startKoin
 
 class RMMainActivity : ComponentActivity() {
     private val mainViewModel: MainViewModel by viewModel()
@@ -63,6 +58,7 @@ class RMMainActivity : ComponentActivity() {
                 textAlign = TextAlign.Center
             )
             CharacterList(
+                episodeCount = mainViewModel.episodeNumber,
                 characterList = characterList.value
             )
         }

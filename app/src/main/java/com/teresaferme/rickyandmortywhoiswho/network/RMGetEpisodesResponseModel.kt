@@ -3,9 +3,7 @@ package com.teresaferme.rickyandmortywhoiswho.network
 import com.google.gson.annotations.SerializedName
 import com.teresaferme.rickyandmortywhoiswho.model.RMCharacter
 
-class RMGetCharactersResponseModel(
+class RMGetEpisodesResponseModel(
     @SerializedName("info")
-    val info: RMGetInfoResponseModel,
-    @SerializedName("results")
-    val results: List<RMCharacter>
+    val info: RMGetInfoResponseModel
 )
