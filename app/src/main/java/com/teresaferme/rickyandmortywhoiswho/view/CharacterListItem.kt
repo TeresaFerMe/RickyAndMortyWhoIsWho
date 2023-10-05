@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -17,95 +18,116 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.teresaferme.rickyandmortywhoiswho.R
 import com.teresaferme.rickyandmortywhoiswho.model.RMCharacter
 import com.teresaferme.rickyandmortywhoiswho.model.RMCharacterType
-import com.teresaferme.rickyandmortywhoiswho.model.RMGetCharactersPlaceResponseModel
 import com.teresaferme.rickyandmortywhoiswho.model.RMStatus
 
 @Composable
 fun CharacterListItem(
     episodeCount: Int?, model: RMCharacter
 ) {
-    Card(
-        Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(horizontal = 20.dp, vertical = 12.dp)
-            .clickable {
-                //TODO TERESA to be implemented
-            }
-    ) {
-        Row {
-            Box(
-                modifier = Modifier.wrapContentSize()
-            ) {
+    var isExtended by remember {
+        mutableStateOf(false)
+    }
+    val modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 20.dp, vertical = 12.dp)
+        .clickable {
+            isExtended = !isExtended
+        }
+    if (!isExtended) modifier.height(100.dp)
+    else modifier.wrapContentHeight()
+    Card(modifier) {
+        Column {
+            Row {
+                val imageModifier =
+                    if (isExtended) Modifier.size(150.dp) else Modifier.size(100.dp)
                 AsyncImage(
-                    modifier = Modifier.clip(
+                    modifier = imageModifier.clip(
                         RoundedCornerShape(
-                            topStart = 12.dp, bottomStart = 12.dp
+                            topStart = 12.dp, bottomStart = if (isExtended) 0.dp else 12.dp
                         )
                     ), model = model.image, contentDescription = model.image
                 )
-                Icon(
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(12.dp)
-                        .size(32.dp),
-                    painter = painterResource(id = model.getGender().resourceId),
-                    contentDescription = "Gender",
-                    tint = Color.White
-                )
-            }
-
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(20.dp)
-            ) {
-                Column {
-                    Text(fontWeight = FontWeight.Bold, fontSize = 20.sp, text = model.name)
-                    Text(text = model.getSpecies().value)
-                    episodeCount?.let {
-                        Button(
-                            contentPadding = PaddingValues(horizontal = 6.dp, vertical = 6.dp),
-                            onClick = { /**/ },
-                            enabled = false
-                        ) {
-                            Text(
-                                modifier = Modifier.padding(0.dp),
-                                text = RMCharacterType.getCharacterType(
-                                    model.episode.size.div(
-                                        episodeCount.toDouble()
-                                    )
-                                ).description
-                            )
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp)
+                ) {
+                    Column {
+                        Text(fontWeight = FontWeight.Bold, fontSize = 20.sp, text = model.name)
+                        Row {
+                            if (isExtended) {
+                                Icon(
+                                    modifier = Modifier
+                                        .padding(12.dp)
+                                        .size(32.dp),
+                                    painter = painterResource(id = model.getGender().resourceId),
+                                    contentDescription = "Gender",
+                                    tint = Color.White
+                                )
+                                episodeCount?.let {
+                                    Button(
+                                        modifier = Modifier.padding(vertical = 12.dp),
+                                        contentPadding = PaddingValues(8.dp),
+                                        onClick = { /**/ },
+                                        enabled = false
+                                    ) {
+                                        Text(
+                                            modifier = Modifier.padding(0.dp),
+                                            text = calculateProtagonismLevel(model, it).description
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
-                }
-                if (model.getStatus() == RMStatus.DEAD) {
-                    Image(
-                        modifier = Modifier
-                            .padding(12.dp)
-                            .size(32.dp)
-                            .align(Alignment.BottomEnd),
-                        painter = painterResource(id = R.drawable.image_dead),
-                        contentDescription = "Dead"
-                    )
+                    if (isExtended && model.getStatus() == RMStatus.DEAD) {
+                        Image(
+                            modifier = Modifier
+                                .padding(12.dp)
+                                .size(32.dp)
+                                .align(Alignment.BottomEnd),
+                            painter = painterResource(id = R.drawable.image_dead),
+                            contentDescription = "Dead"
+                        )
+                    }
                 }
             }
+            if (isExtended) ExtendedItemInfo(model = model, episodeCount = episodeCount)
         }
-
     }
+}
+
+@Composable
+private fun ExtendedItemInfo(model: RMCharacter, episodeCount: Int?) {
+    Column(Modifier.padding(20.dp)) {
+        Text(text = "Species: ${model.getSpecies().value}")
+        Text(text = "Status: ${model.getStatus().value}")
+        Text(text = "Origin: ${model.origin.name}")
+        Text(text = "Location: ${model.location.name}")
+        Text(text = "Appears in ${model.episode.size}/$episodeCount episodes")
+    }
+}
+
+private fun calculateProtagonismLevel(model: RMCharacter, episodeCount: Int): RMCharacterType {
+    return RMCharacterType.getCharacterType(
+        model.episode.size.div(
+            episodeCount.toDouble()
+        )
+    )
 }
