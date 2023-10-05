@@ -1,7 +1,7 @@
 package com.teresaferme.rickyandmortywhoiswho.model
 
 enum class RMStatus(val value: String) {
-    LIFE("Alive"),
+    ALIVE("Alive"),
     DEAD("Dead"),
     UNKNOWN("Unknown");
 

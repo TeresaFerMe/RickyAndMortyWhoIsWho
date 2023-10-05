@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -29,7 +28,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
+import com.teresaferme.rickyandmortywhoiswho.model.Filters
 import com.teresaferme.rickyandmortywhoiswho.model.RMCharacter
+import com.teresaferme.rickyandmortywhoiswho.model.RMGender
+import com.teresaferme.rickyandmortywhoiswho.model.RMStatus
 import com.teresaferme.rickyandmortywhoiswho.ui.theme.RickyAndMortyWhoIsWhoTheme
 import com.teresaferme.rickyandmortywhoiswho.view.CharacterList
 import com.teresaferme.rickyandmortywhoiswho.view.RMLabelledRadioButton
@@ -40,6 +42,7 @@ class RMMainActivity : ComponentActivity() {
     private val characterList: MutableState<List<RMCharacter>?> = mutableStateOf(null)
     private val episodeCount: MutableState<Int?> = mutableStateOf(null)
     private var showFilters = mutableStateOf(false)
+    private var activeFilters = Filters(null, null)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setUpObservers()
@@ -108,19 +111,37 @@ class RMMainActivity : ComponentActivity() {
                 }) {
                 Column(
                     Modifier
-                        .background(Color.Magenta)
+                        .background(Color.LightGray)
                         .fillMaxWidth()
-                        .safeDrawingPadding()
                         .align(Alignment.Center)
                         .clip(RoundedCornerShape(12.dp))
                         .padding(24.dp)
                 ) {
                     Text(text = "Gender")
-                    RMLabelledRadioButton(false, "Male", {})
-                    RMLabelledRadioButton(false, "Female", {})
+                    RMLabelledRadioButton(false, "Male") {
+                        activeFilters.gender =  if (it) RMGender.MALE else null
+                    }
+                    RMLabelledRadioButton(false, "Female") {
+                        activeFilters.gender =  if (it) RMGender.FEMALE else null
+                    }
                     Text(text = "Status")
-                    RMLabelledRadioButton(false, "Dead", {})
-                    RMLabelledRadioButton(false, "Alive", {})
+                    RMLabelledRadioButton(false, "Dead") {
+                        activeFilters.status =  if (it) RMStatus.DEAD else null
+                    }
+                    RMLabelledRadioButton(false, "Alive") {
+                        activeFilters.status =  if (it) RMStatus.ALIVE else null
+                    }
+                    Button(modifier = Modifier
+                        .padding(vertical = 12.dp),
+                        contentPadding = PaddingValues(8.dp),
+                        onClick = {
+                            //TODO TERESA make request
+                            showFilters.value = false
+                        }) {
+                        Text(
+                            modifier = Modifier.padding(0.dp), text = "Apply"
+                        )
+                    }
                 }
             }
         }
