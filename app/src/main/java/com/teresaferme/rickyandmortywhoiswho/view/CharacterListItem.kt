@@ -35,14 +35,16 @@ import com.teresaferme.rickyandmortywhoiswho.model.RMStatus
 
 @Composable
 fun CharacterListItem(
-    episodeCount: Int?, model: RMCharacter, onClick: (url: String) -> Unit
+    episodeCount: Int?, model: RMCharacter
 ) {
     Card(
         Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(horizontal = 20.dp, vertical = 12.dp)
-            .clickable { onClick.invoke(model.url) }
+            .clickable {
+                //TODO TERESA to be implemented
+            }
     ) {
         Row {
             Box(

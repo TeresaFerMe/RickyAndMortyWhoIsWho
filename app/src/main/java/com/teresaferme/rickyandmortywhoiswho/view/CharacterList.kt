@@ -10,16 +10,14 @@ import kotlin.reflect.KMutableProperty0
 fun CharacterList(
     characterList: List<RMCharacter>?,
     episodeCount: Int?,
-    executeWhenEnd: () -> Unit,
-    onItemClicked: (url: String) -> Unit
+    executeWhenEnd: () -> Unit
 ) {
     LazyColumn(content = {
         characterList?.forEach { character ->
             item {
                 CharacterListItem(
                     episodeCount,
-                    character,
-                    onItemClicked
+                    character
                 )
                 if (characterList.indexOf(character) == characterList.size - 1) executeWhenEnd.invoke()
             }

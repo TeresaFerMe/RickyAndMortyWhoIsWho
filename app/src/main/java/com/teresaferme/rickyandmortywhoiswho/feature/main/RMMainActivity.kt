@@ -64,8 +64,7 @@ class RMMainActivity : ComponentActivity() {
             CharacterList(
                 episodeCount = episodeCount.value,
                 characterList = characterList.value,
-                executeWhenEnd = mainViewModel::getMoreCharacters,
-                onItemClicked = mainViewModel::retrieveCharacterInfo
+                executeWhenEnd = mainViewModel::getMoreCharacters
             )
         }
     }
