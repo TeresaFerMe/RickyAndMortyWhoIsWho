@@ -1,21 +1,20 @@
 package com.teresaferme.rickyandmortywhoiswho.view
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun RMLabelledRadioButton(isSelected: Boolean, label: String, executeOnClick: (Boolean) -> Unit) {
-    var isSelected by remember { mutableStateOf(isSelected) }
+    var isSelected = mutableStateOf(isSelected)
     Row {
-        RadioButton(selected = isSelected, onClick = {
-            isSelected = !isSelected
-            executeOnClick.invoke(isSelected) })
+        RadioButton(selected = isSelected.value, onClick = {
+            isSelected.value = !isSelected.value
+            executeOnClick.invoke(isSelected.value) })
         Text(text = label)
     }
 }

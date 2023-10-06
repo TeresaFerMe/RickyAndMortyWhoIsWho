@@ -42,7 +42,8 @@ class RMMainActivity : ComponentActivity() {
     private val characterList: MutableState<List<RMCharacter>?> = mutableStateOf(null)
     private val episodeCount: MutableState<Int?> = mutableStateOf(null)
     private var showFilters = mutableStateOf(false)
-    private var activeFilters = Filters(null, null)
+    private var activeFilters = Filters(mutableStateOf(null), mutableStateOf(null))
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setUpObservers()
@@ -103,12 +104,12 @@ class RMMainActivity : ComponentActivity() {
         Popup(alignment = Alignment.Center, onDismissRequest = { this.showFilters.value = false }) {
             Box(
                 Modifier
-                .background(Color.LightGray.copy(alpha = 0.5f))
-                .fillMaxSize()
-                .padding(24.dp)
-                .clickable {
-                   this.showFilters.value = false
-                }) {
+                    .background(Color.LightGray.copy(alpha = 0.5f))
+                    .fillMaxSize()
+                    .padding(24.dp)
+                    .clickable {
+                        this.showFilters.value = false
+                    }) {
                 Column(
                     Modifier
                         .background(Color.LightGray)
@@ -117,20 +118,8 @@ class RMMainActivity : ComponentActivity() {
                         .clip(RoundedCornerShape(12.dp))
                         .padding(24.dp)
                 ) {
-                    Text(text = "Gender")
-                    RMLabelledRadioButton(false, "Male") {
-                        activeFilters.gender =  if (it) RMGender.MALE else null
-                    }
-                    RMLabelledRadioButton(false, "Female") {
-                        activeFilters.gender =  if (it) RMGender.FEMALE else null
-                    }
-                    Text(text = "Status")
-                    RMLabelledRadioButton(false, "Dead") {
-                        activeFilters.status =  if (it) RMStatus.DEAD else null
-                    }
-                    RMLabelledRadioButton(false, "Alive") {
-                        activeFilters.status =  if (it) RMStatus.ALIVE else null
-                    }
+                    DisplayGenderFilters()
+                    DisplayStatusFilters()
                     Button(modifier = Modifier
                         .padding(vertical = 12.dp),
                         contentPadding = PaddingValues(8.dp),
@@ -143,6 +132,26 @@ class RMMainActivity : ComponentActivity() {
                         )
                     }
                 }
+            }
+        }
+    }
+
+    @Composable
+    private fun DisplayGenderFilters() {
+        Text(text = "Gender")
+        RMGender.values().forEach {
+            RMLabelledRadioButton(activeFilters.gender.value == it, it.value) { enabled ->
+                activeFilters.gender.value =  if (enabled) it else null
+            }
+        }
+    }
+
+    @Composable
+    private fun DisplayStatusFilters() {
+        Text(text = "Status")
+        RMStatus.values().forEach {
+            RMLabelledRadioButton(activeFilters.status.value == it, it.value) { enabled ->
+                activeFilters.status.value =  if (enabled) it else null
             }
         }
     }

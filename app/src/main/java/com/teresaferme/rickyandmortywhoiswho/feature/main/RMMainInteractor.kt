@@ -1,15 +1,11 @@
 package com.teresaferme.rickyandmortywhoiswho.feature.main
 
-import android.util.Log
 import com.teresaferme.rickyandmortywhoiswho.model.RMCharacter
 import com.teresaferme.rickyandmortywhoiswho.network.RMCallback
 import com.teresaferme.rickyandmortywhoiswho.network.RMGetCharactersResponseModel
 import com.teresaferme.rickyandmortywhoiswho.network.RMGetEpisodesResponseModel
 import com.teresaferme.rickyandmortywhoiswho.network.RMRetrofitClientInstance
 import com.teresaferme.rickyandmortywhoiswho.network.RMService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class RMMainInteractor {
     var characters: MutableList<RMCharacter>? = mutableListOf()
