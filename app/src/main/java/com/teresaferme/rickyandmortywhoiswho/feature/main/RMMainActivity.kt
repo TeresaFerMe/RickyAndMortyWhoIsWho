@@ -74,15 +74,12 @@ class RMMainActivity : ComponentActivity() {
             Row(Modifier.padding(horizontal = 20.dp, vertical = 12.dp)) {
                 Text(
                     modifier = Modifier
-                        .padding(20.dp)
                         .fillMaxWidth()
                         .weight(0.75f, true),
                     text = "Characters",
-                    fontSize = 30.sp,
-                    textAlign = TextAlign.Center
+                    fontSize = 30.sp
                 )
                 Button(modifier = Modifier
-                    .padding(vertical = 12.dp)
                     .weight(0.25f, true),
                     contentPadding = PaddingValues(8.dp),
                     onClick = {

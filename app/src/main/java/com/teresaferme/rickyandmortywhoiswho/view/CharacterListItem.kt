@@ -4,8 +4,11 @@ import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,6 +44,7 @@ import com.teresaferme.rickyandmortywhoiswho.model.RMCharacterType
 import com.teresaferme.rickyandmortywhoiswho.model.RMStatus
 import kotlinx.coroutines.coroutineScope
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CharacterListItem(
     episodeCount: Int?, model: RMCharacter
@@ -85,7 +89,9 @@ fun CharacterListItem(
                 AsyncImage(
                     modifier = imageModifier.clip(
                         RoundedCornerShape(
-                            topStart = 12.dp, bottomStart = if (isExtended) 0.dp else 12.dp
+                            topStart = 12.dp,
+                            bottomStart = if (isExtended) 0.dp else 12.dp,
+                            bottomEnd = if (isExtended) 12.dp else 0.dp
                         )
                     ), model = model.image, contentDescription = model.image
                 )
@@ -96,16 +102,22 @@ fun CharacterListItem(
                 ) {
                     Column {
                         Text(fontWeight = FontWeight.Bold, fontSize = 20.sp, text = model.name)
-                        Row {
+                        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             if (isExtended) {
-                                Icon(
-                                    modifier = Modifier
-                                        .padding(12.dp)
-                                        .size(32.dp),
-                                    painter = painterResource(id = model.getGender().resourceId),
-                                    contentDescription = "Gender",
-                                    tint = Color.White
-                                )
+                                Button(
+                                    modifier = Modifier.padding(vertical = 12.dp),
+                                    contentPadding = PaddingValues(8.dp),
+                                    onClick = { /**/ },
+                                    enabled = false
+                                ) {
+                                    Icon(
+                                        modifier = Modifier
+                                            .size(24.dp),
+                                        painter = painterResource(id = model.getGender().resourceId),
+                                        contentDescription = "Gender",
+                                        tint = Color.White
+                                    )
+                                }
                                 episodeCount?.let {
                                     Button(
                                         modifier = Modifier.padding(vertical = 12.dp),
@@ -115,22 +127,29 @@ fun CharacterListItem(
                                     ) {
                                         Text(
                                             modifier = Modifier.padding(0.dp),
-                                            text = calculateProtagonismLevel(model, it).description
+                                            text = calculateProtagonismLevel(model, it).description,
+                                            color = Color.White
+                                        )
+                                    }
+                                }
+
+                                if (model.getStatus() == RMStatus.DEAD) {
+                                    Button(
+                                        modifier = Modifier.padding(vertical = 12.dp),
+                                        contentPadding = PaddingValues(8.dp),
+                                        onClick = { /**/ },
+                                        enabled = false
+                                    ) {
+                                        Image(
+                                            modifier = Modifier
+                                                .size(24.dp),
+                                            painter = painterResource(id = R.drawable.image_dead),
+                                            contentDescription = "Dead"
                                         )
                                     }
                                 }
                             }
                         }
-                    }
-                    if (isExtended && model.getStatus() == RMStatus.DEAD) {
-                        Image(
-                            modifier = Modifier
-                                .padding(12.dp)
-                                .size(32.dp)
-                                .align(Alignment.BottomEnd),
-                            painter = painterResource(id = R.drawable.image_dead),
-                            contentDescription = "Dead"
-                        )
                     }
                 }
             }
