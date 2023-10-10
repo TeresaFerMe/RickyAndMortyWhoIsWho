@@ -64,7 +64,7 @@ fun CharacterListItem(
             try {
                 val originalBitmap = Picasso.get().load(model.image).get()
                 val scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, 1, 1, false)
-                averageColor = Color(scaledBitmap.getPixel(0, 0))
+                averageColor = Color(scaledBitmap.getPixel(0, 0)).copy(0.5f)
             } catch (e: InterruptedException) {
                 e.printStackTrace()
             } catch (e: IllegalStateException) {
