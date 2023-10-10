@@ -1,6 +1,8 @@
 package com.teresaferme.rickyandmortywhoiswho.view
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,13 +13,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,10 +34,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.squareup.picasso.Picasso
 import com.teresaferme.rickyandmortywhoiswho.R
 import com.teresaferme.rickyandmortywhoiswho.model.RMCharacter
 import com.teresaferme.rickyandmortywhoiswho.model.RMCharacterType
 import com.teresaferme.rickyandmortywhoiswho.model.RMStatus
+import kotlinx.coroutines.coroutineScope
 
 @Composable
 fun CharacterListItem(
@@ -51,11 +56,32 @@ fun CharacterListItem(
         }
     if (!isExtended) modifier.height(100.dp)
     else modifier.wrapContentHeight()
-    Card(modifier) {
-        Column {
+    var averageColor by remember {
+        mutableStateOf<Color?>(null)
+    }
+    val thread: Thread = object : Thread() {
+        override fun run() {
+            try {
+                val originalBitmap = Picasso.get().load(model.image).get()
+                val scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, 1, 1, false)
+                averageColor = Color(scaledBitmap.getPixel(0, 0))
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            } catch (e: IllegalStateException) {
+                e.printStackTrace()
+            }
+        }
+    }
+    thread.start()
+
+    Card(
+        modifier, elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        )
+    ) {
+        Column(Modifier.background(averageColor ?: Color.Gray)) {
             Row {
-                val imageModifier =
-                    if (isExtended) Modifier.size(150.dp) else Modifier.size(100.dp)
+                val imageModifier = if (isExtended) Modifier.size(150.dp) else Modifier.size(100.dp)
                 AsyncImage(
                     modifier = imageModifier.clip(
                         RoundedCornerShape(
