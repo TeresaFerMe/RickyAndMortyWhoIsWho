@@ -20,5 +20,8 @@ interface RMService {
 
     @GET
     fun getCharacterDetail(@Url url: String): Call<RMCharacter>
+
+    @GET("character/")
+    fun getFilteredCharacters(@Query("gender") gender: String?, @Query("status") status: String?): Call<RMGetCharactersResponseModel>?
 }
 

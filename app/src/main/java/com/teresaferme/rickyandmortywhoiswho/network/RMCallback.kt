@@ -9,6 +9,7 @@ class RMCallback<T>(private val executeOnSuccess: (response: Response<T>) -> Uni
     override fun onResponse(
         call: Call<T>, response: Response<T>
     ) {
+        Log.e(this.javaClass.name, response.toString())
         executeOnSuccess.invoke(response)
     }
 

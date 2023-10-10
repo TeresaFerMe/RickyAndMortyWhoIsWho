@@ -1,5 +1,6 @@
 package com.teresaferme.rickyandmortywhoiswho.feature.main
 
+import com.teresaferme.rickyandmortywhoiswho.model.Filters
 import com.teresaferme.rickyandmortywhoiswho.model.RMCharacter
 import com.teresaferme.rickyandmortywhoiswho.network.RMCallback
 import com.teresaferme.rickyandmortywhoiswho.network.RMGetCharactersResponseModel
@@ -27,6 +28,18 @@ class RMMainInteractor {
                     }
                 })
         }
+    }
+
+    fun getFilteredCharacters(callback: (MutableList<RMCharacter>?) -> Unit, filters: Filters) {
+        service?.getFilteredCharacters(
+            filters.gender.value?.value?.lowercase(), filters.status.value?.value?.lowercase()
+        )?.enqueue(RMCallback<RMGetCharactersResponseModel> { response ->
+                response.body()?.let { body ->
+                    characters = body.results as MutableList<RMCharacter>
+                    callback.invoke(characters)
+                    //TODO TERESA implement map of nextt pages related to the filters
+                }
+            })
     }
 
     fun getCharacterList(callback: (MutableList<RMCharacter>?) -> Unit) {

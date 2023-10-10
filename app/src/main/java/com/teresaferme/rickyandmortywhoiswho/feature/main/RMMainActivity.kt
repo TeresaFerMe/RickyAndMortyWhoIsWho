@@ -43,6 +43,7 @@ class RMMainActivity : ComponentActivity() {
     private val episodeCount: MutableState<Int?> = mutableStateOf(null)
     private var showFilters = mutableStateOf(false)
     private var activeFilters = Filters(mutableStateOf(null), mutableStateOf(null))
+    private var selectedFilters = Filters(mutableStateOf(null), mutableStateOf(null))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +85,9 @@ class RMMainActivity : ComponentActivity() {
                     .padding(vertical = 12.dp)
                     .weight(0.25f, true),
                     contentPadding = PaddingValues(8.dp),
-                    onClick = { showFilters.value = true }) {
+                    onClick = {
+                        showFilters.value = true
+                    }) {
                     Text(
                         modifier = Modifier.padding(0.dp), text = "Filter"
                     )
@@ -101,13 +104,17 @@ class RMMainActivity : ComponentActivity() {
 
     @Composable
     private fun DisplayPopUp() {
-        Popup(alignment = Alignment.Center, onDismissRequest = { this.showFilters.value = false }) {
+        Popup(alignment = Alignment.Center, onDismissRequest = {
+            selectedFilters = activeFilters
+            this.showFilters.value = false
+        }) {
             Box(
                 Modifier
                     .background(Color.LightGray.copy(alpha = 0.5f))
                     .fillMaxSize()
                     .padding(24.dp)
                     .clickable {
+                        selectedFilters = activeFilters
                         this.showFilters.value = false
                     }) {
                 Column(
@@ -124,8 +131,9 @@ class RMMainActivity : ComponentActivity() {
                         .padding(vertical = 12.dp),
                         contentPadding = PaddingValues(8.dp),
                         onClick = {
-                            //TODO TERESA make request
+                            activeFilters = selectedFilters
                             showFilters.value = false
+                            mainViewModel.getFilteredCharacters(activeFilters)
                         }) {
                         Text(
                             modifier = Modifier.padding(0.dp), text = "Apply"
@@ -140,8 +148,8 @@ class RMMainActivity : ComponentActivity() {
     private fun DisplayGenderFilters() {
         Text(text = "Gender")
         RMGender.values().forEach {
-            RMLabelledRadioButton(activeFilters.gender.value == it, it.value) { enabled ->
-                activeFilters.gender.value =  if (enabled) it else null
+            RMLabelledRadioButton(selectedFilters.gender.value == it, it.value) { enabled ->
+                selectedFilters.gender.value =  if (enabled) it else null
             }
         }
     }
@@ -150,8 +158,8 @@ class RMMainActivity : ComponentActivity() {
     private fun DisplayStatusFilters() {
         Text(text = "Status")
         RMStatus.values().forEach {
-            RMLabelledRadioButton(activeFilters.status.value == it, it.value) { enabled ->
-                activeFilters.status.value =  if (enabled) it else null
+            RMLabelledRadioButton(selectedFilters.status.value == it, it.value) { enabled ->
+                selectedFilters.status.value =  if (enabled) it else null
             }
         }
     }

@@ -3,6 +3,7 @@ package com.teresaferme.rickyandmortywhoiswho.feature.main
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.teresaferme.rickyandmortywhoiswho.model.Filters
 import com.teresaferme.rickyandmortywhoiswho.model.RMCharacter
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -41,6 +42,14 @@ class MainViewModel() : ViewModel(), KoinComponent {
             interactor.getEpisodeList {
                 episodeNumber.value = it
             }
+        }
+    }
+
+    fun getFilteredCharacters(activeFilters: Filters) {
+        viewModelScope.launch {
+            interactor.getFilteredCharacters(filters = activeFilters, callback = {
+                characterList.value = it
+            })
         }
     }
 
